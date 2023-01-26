@@ -2,7 +2,7 @@ const {response,request}=require('express');
 const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
 const { generarJWT } = require('../helpers/generar-jwt');
-const { default: axios } = require('axios');
+
 
 const authLogin = async (req = request, res = response)=>{
     const {correo,password} = req.body;
@@ -37,14 +37,7 @@ const authLogin = async (req = request, res = response)=>{
     // asignar JWT
     const token = await generarJWT(usuario.id);
 
-    //PROVISIONAL AXIOS CONEXIÓN CON BRIDGE 
-
-    const respuesta = await axios.post('http://localhost/bridge/bridge.php',{
-        name: 'HOLA DESDE JAM REST API NODE'
-      });
-      const proveedor= respuesta.data;
-
-     //PROVISIONAL AXIOS CONEXIÓN CON BRIDGE 
+    
 
 
     res.json({

@@ -18,9 +18,16 @@ $data = json_decode(file_get_contents("php://input"));
 /* if(!empty($data->name) && !empty($data->description) &&
 !empty($data->price) && !empty($data->category_id) &&
 !empty($data->created)){ */
-if($data->name){
 
-    echo json_encode(array("message" => $data->name));
+    if(!empty($data->referencia) && !empty($data->sku) &&
+    !empty($data->monto)){
+
+        echo json_encode(
+                    array(  
+                            "referenciaB" => $data->referencia,
+                            "skuB" => $data->sku,
+                            "montoB" => $data->sku
+                        ));
 
 /* $items->name = $data->name;
 $items->description = $data->description;
@@ -37,6 +44,6 @@ echo json_encode(array("message" => "Unable to create item."));
 } */
 } else{ 
 http_response_code(400); 
-echo json_encode(array("message" => "Unable to create item. Data is incomplete."));
+echo json_encode(array("msg" => "DATOS INCOMPLETOS"));
 }
 ?>
