@@ -37,14 +37,14 @@ const authLogin = async (req = request, res = response)=>{
     // asignar JWT
     const token = await generarJWT(usuario.id);
 
-    //PROVISIONAL AXIOS CONECCION CON BRIDGE 
+    //PROVISIONAL AXIOS CONEXIÓN CON BRIDGE 
 
     const respuesta = await axios.post('http://localhost/bridge/bridge.php',{
         name: 'HOLA DESDE JAM REST API NODE'
       });
       const proveedor= respuesta.data;
 
-     //PROVISIONAL AXIOS CONECCION CON BRIDGE 
+     //PROVISIONAL AXIOS CONEXIÓN CON BRIDGE 
 
 
     res.json({
