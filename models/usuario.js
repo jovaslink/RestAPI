@@ -35,7 +35,7 @@ const UsuarioSchema = Schema({
 
 UsuarioSchema.methods.toJSON = function(){ 
     const {__v, password, _id, ...usuario } = this.toObject(); //quitamos la version y password al devolver el modelo
-    usuario.uid=_id; 
+    usuario.uid=_id; //renombramos _id por uid
     return usuario;
 }
 

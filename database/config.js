@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.set("strictQuery", false);
+mongoose.set("strictQuery", false);//en la nueva version se requiere para quitar warnings
 
 const dbConnection= async ()=> {
         
@@ -9,7 +9,7 @@ const dbConnection= async ()=> {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             //useCreateIndex: true,
-            //useFindAndModify: false
+            //useFindAndModify: false //NO FUNCIONAN EN LAS NUEVAS VERSIONES, NO ACTUALIZABA EL OBJETO DEVUELTO
         });
 
         console.log('--BASE DE DATOS ONLINE--');

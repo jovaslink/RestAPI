@@ -8,15 +8,15 @@ const {
         validarVariosRoles,
         validarJWT,
         validarCampos
-    } = require ('../middlewares');
+    } = require ('../middlewares'); //Se importan del index de middlewares con el operador rest o spreed
 
 
 const router = Router();
-    
+    //Los middlewares se ejecutan de forma secuencial
     router.get('/',
         [
             validarJWT,
-            validarAdminRole
+            validarAdminRole //protege la ruta para que solo el ADMIN_ROLE pueda usarla
         ], 
         usuariosGet );
     
@@ -28,7 +28,7 @@ const router = Router();
             //check('role','No es un ROL váldo').isIn(['ADMIN_ROLE','USER_ROLE']),
             check('correo').custom(existeEmail),
             check('role').custom(existeRol), //la función recibe el campo role, pero al recibir y retornar el mismo campo se puede simplificar solo con el nombr de la función
-            validarCampos
+            validarCampos //funcion middleware que verifica si hay errores en los campos, si todo OK llama a next()
         ],
         usuariosPost );
     
@@ -45,7 +45,7 @@ const router = Router();
         [ 
             validarJWT,
             //validarAdminRole,
-            validarVariosRoles('EDITOR_ROLE','ADMIN_ROLE'),
+            validarVariosRoles('EDITOR_ROLE','ADMIN_ROLE'),//Protege la ruta con 1 o varios Roles que le asigemos desde la ruta
             check('idUser', 'No es un Id válido').isMongoId(),
             check('idUser').custom(existeId),
             validarCampos
