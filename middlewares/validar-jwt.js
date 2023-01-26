@@ -1,7 +1,8 @@
 const { response, request } = require("express");
 const jwt = require("jsonwebtoken");
+const Usuario = require("../models/usuario");
 
-const validarJWT= (req =request, res =response, next)=>{
+const validarJWT= async (req =request, res =response, next)=>{
     const token = req.header('jam-token');
     
     if(!token){
@@ -10,7 +11,19 @@ const validarJWT= (req =request, res =response, next)=>{
 
     try { 
         const {uid} = jwt.verify(token,process.env.SECRETPRIVATEKEY);
-        req.uid=uid;
+        const usuarioAuth= await Usuario.findById(uid);
+
+        if(!usuarioAuth){
+            return res.status(401).json( { msg:'Token no válido -Usuario no existe en DB'} );
+
+        }
+
+        if(!usuarioAuth.estado){
+            return res.status(401).json( { msg:'Token no válido -Usuario estado:false'} );
+
+        }
+        
+        req.usuarioAuth=usuarioAuth;
         next();
 
     }catch(err) {
