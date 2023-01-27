@@ -6,6 +6,7 @@ header("Access-Control-Max-Age: 36000");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once 'prontipagos/validacion-prontipagos.php';
+include_once 'prontipagos/obtener-catalogo.php';
 
 //$xml_r = validacionProntipagos(20,5573898468,NULL,1986161986);
 
@@ -18,7 +19,8 @@ $data = json_decode(file_get_contents("php://input"));
 
 
     if(!empty($data->referencia) && !empty($data->sku) &&
-    !empty($data->monto)){
+        !empty($data->monto)){
+
         $monto = intval($data->monto);
         $referencia = intval($data->referencia);
         $id= intval($data->uid);
@@ -52,15 +54,22 @@ $data = json_decode(file_get_contents("php://input"));
                             "uidB"=>$id
 
                         ));
+        return;
+
+    }
+
+    if(!empty($data->proveedor)){
+        //$xml_r=$data->proveedor;
+        $xml_r = obtenerCatalogo();
+        echo json_encode(
+            array(  
+                    "msg"=>$xml_r,
+                ));
+        return;
+    }
 
 
-} else{ 
-http_response_code(400); 
-echo json_encode(array("msg" => "DATOS INCOMPLETOS"));
-}
-
- 
-
-
+    http_response_code(400); 
+    echo json_encode(array("msg" => "DATOS INCOMPLETOS"));
 
 ?>

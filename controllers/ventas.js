@@ -1,5 +1,5 @@
 const { default: axios } = require("axios");
-const { request, response } = require("express")
+const { request, response } = require("express");
 
 
 const ventas= async (req=request, res=response)=>{
