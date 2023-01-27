@@ -2,48 +2,65 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
+header("Access-Control-Max-Age: 36000");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-//include_once '.. / config/Database.php';
-//include_once '.. / class/Items.php'; proveedor
+include_once 'prontipagos/validacion-prontipagos.php';
 
-//$database = new Database();
-//$db = $database->getConnection();
+//$xml_r = validacionProntipagos(20,5573898468,NULL,1986161986);
 
-//$items = new Items($db);
+ //var_dump($xml_r);  
+
+
 
 $data = json_decode(file_get_contents("php://input"));
 
-/* if(!empty($data->name) && !empty($data->description) &&
-!empty($data->price) && !empty($data->category_id) &&
-!empty($data->created)){ */
+
 
     if(!empty($data->referencia) && !empty($data->sku) &&
     !empty($data->monto)){
+        $monto = intval($data->monto);
+        $referencia = intval($data->referencia);
+        $id= intval($data->uid);
+        $xml_r = validacionProntipagos($monto,$referencia,NULL,$id);
+   
+    /* if(true){
 
+        $monto = 20;
+        $referencia = 5573898468;
+        $id= 364859;
+
+        
+        $xml_r = validacionProntipagos($monto,$referencia,NULL,$id);
+        if (isset($xml_r->return->codeTransaction)) {
+			$codeTransaction=$xml_r->return->codeTransaction;
+            echo json_encode(
+                array(  
+                        "msg"=>$codeTransaction,
+                        "montoB"=>$monto,
+                        "referenciaB"=>$referencia,
+                        "uidB"=>"YES BABY"
+
+                    ));
+
+		} */
         echo json_encode(
                     array(  
-                            "referenciaB" => $data->referencia,
-                            "skuB" => $data->sku,
-                            "montoB" => $data->sku
+                            "msg"=>$xml_r,
+                            "montoB"=>$monto,
+                            "referenciaB"=>$referencia,
+                            "uidB"=>$id
+
                         ));
 
-/* $items->name = $data->name;
-$items->description = $data->description;
-$items->price = $data->price;
-$items->category_id = $data->category_id; 
-$items->created = date('Y-m-d H:i:s'); 
- */
-/* if($items->create()){ 
-http_response_code(201); 
-echo json_encode(array("message" => "Item was created."));
-} else{ 
-http_response_code(503); 
-echo json_encode(array("message" => "Unable to create item."));
-} */
+
 } else{ 
 http_response_code(400); 
 echo json_encode(array("msg" => "DATOS INCOMPLETOS"));
 }
+
+ 
+
+
+
 ?>

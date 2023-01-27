@@ -6,24 +6,45 @@ const ventas= async (req=request, res=response)=>{
 
    try {
    
-    const {referencia,sku,monto}=req.body
+    const {referencia,sku,monto,uid}=req.body
 
     //AXIOS CONEXIÓN CON BRIDGE 
+    
 
     const respuesta = await axios.post('http://localhost/bridge/bridge.php',
                             {
                                 referencia,
                                 sku,
-                                monto
+                                monto,
+                                uid
                             });
 
-    const  {referenciaB,skuB,montoB} = respuesta.data;
-
-    
-    return res.status(200).json({
+    const  {
+            msg,
             referenciaB,
             skuB,
-            montoB
+            montoB,
+            uidB} = respuesta.data;
+
+    console.log(msg);
+    /*
+        {
+            return: {
+                codeTransaction: '00',
+                codeDescription: 'Transaccion exitosa',
+                dateTransaction: '27/01/2023 00:23:42',
+                transactionId: '128475',
+                folioTransaction: '727120'
+            }
+        }
+    
+    */
+
+    return res.status(200).json({
+        referenciaB,
+        skuB,
+        montoB,
+        uidB
         });
 
    } catch (err){
